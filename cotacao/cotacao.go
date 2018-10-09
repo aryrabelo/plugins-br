@@ -8,7 +8,7 @@ import (
 )
 
 var (
-	url = "http://api.fixer.io/latest?base=BRL"
+	url = "https://api.fixer.io/latest?base=BRL"
 )
 
 type retorno struct {
@@ -28,10 +28,10 @@ func cotacao(command *bot.Cmd) (msg string, err error) {
 	}
 
 	return fmt.Sprintf("Dólar: %.2f, Euro: %.2f, CAD: %.2f, Libra: %.2f",
-		1 / data.Real.USD,
-		1 / data.Real.EUR,
-		1 / data.Real.CAD,
-		1 / data.Real.GBP), nil
+		1/data.Real.USD,
+		1/data.Real.EUR,
+		1/data.Real.CAD,
+		1/data.Real.GBP), nil
 }
 
 func init() {
