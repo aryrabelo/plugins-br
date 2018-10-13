@@ -24,9 +24,7 @@ type retorno struct {
 func cotacao(command *bot.Cmd) (msg string, err error) {
 	data := &retorno{}
 
-	if os.Getenv("FIXER_IO_ACCESS_KEY") != "" {
-		url := fmt.Sprintf(url, os.Getenv("FIXER_IO_ACCESS_KEY"))
-	}
+	url := fmt.Sprintf(url, os.Getenv("FIXER_IO_ACCESS_KEY"))
 
 	err = web.GetJSON(url, data)
 	if err != nil {
