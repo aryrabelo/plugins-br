@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"os"
 	"testing"
 
 	"github.com/go-chat-bot/bot"
@@ -75,6 +76,26 @@ func TestCotacaoWhenWebServiceReturnsSomethingInvalidMustReturnError(t *testing.
 		}))
 	defer ts.Close()
 	url = ts.URL
+
+	_, err := cotacao(cmd)
+	if err == nil {
+		t.Errorf("Error shouldn't be nil")
+	}
+}
+
+func TestCotacaoMustReachTheCorrectUrl(t *testing.T) {
+	cmd := &bot.Cmd{}
+	os.Setenv("FIXER_IO_ACCESS_KEY", "123")
+
+	ts := httptest.NewServer(
+		http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if r.URL.RequestURI() != "http://data.fixer.io/api/latest?base=BRL&access_key=" {
+				t.Errorf("Error the url is wrong")
+				fmt.Fprintln(w, expectedJSON)
+
+			}
+		}))
+	defer ts.Close()
 
 	_, err := cotacao(cmd)
 	if err == nil {

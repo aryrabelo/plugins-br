@@ -2,13 +2,14 @@ package cotacao
 
 import (
 	"fmt"
+	"os"
 
 	"github.com/go-chat-bot/bot"
 	"github.com/go-chat-bot/plugins/web"
 )
 
 var (
-	url = "https://api.fixer.io/latest?base=BRL"
+	url = "http://data.fixer.io/api/latest?base=BRL&access_key=%s"
 )
 
 type retorno struct {
@@ -22,6 +23,11 @@ type retorno struct {
 
 func cotacao(command *bot.Cmd) (msg string, err error) {
 	data := &retorno{}
+
+	if os.Getenv("FIXER_IO_ACCESS_KEY") != "" {
+		url := fmt.Sprintf(url, os.Getenv("FIXER_IO_ACCESS_KEY"))
+	}
+
 	err = web.GetJSON(url, data)
 	if err != nil {
 		return "", err
